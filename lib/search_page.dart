@@ -10,6 +10,7 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
 
+  // dummy data for a list of users
   List users = [
     {
       "name": "Chuka Ikokwu",
@@ -34,10 +35,12 @@ class _SearchPageState extends State<SearchPage> {
   ];
   List filterUsers = [];
 
-  /// Updates the name that is being searched for
+  /// Searches for users in the list that fit the name being searched for
   void updateSearch(String searchName) {
     setState(() {
       if(searchName != '') {
+        // checks that the search name length is less than the user's name to avoid errors
+        // checks that the each letter in the search name is in the user's name in the same order
         filterUsers = users.where((element) => element['name'].length >= searchName.length && element['name'].toLowerCase().substring(0, searchName.length) == searchName.toLowerCase()).toList();
       } else {
         filterUsers = [];

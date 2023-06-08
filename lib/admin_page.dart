@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:search/admins_list_view.dart';
 import 'package:search/search_page.dart';
 
 class AdminPage extends StatefulWidget {
@@ -35,7 +36,7 @@ class _AdminPageState extends State<AdminPage> {
     {
       "name": "Ben Nguyen",
       "memberDate": DateTime.now(),
-    },
+    }
   ];
 
   @override
@@ -102,7 +103,7 @@ class _AdminPageState extends State<AdminPage> {
                 children: [
                   const Text(
                     'Admins',
-                    style: TextStyle(color: Colors.white, fontSize: 20),
+                    style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   IconButton(
                     onPressed: () {},
@@ -111,28 +112,13 @@ class _AdminPageState extends State<AdminPage> {
                 ],
               ),
             ),
-            ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: admins.length,
-              itemBuilder: (BuildContext context, int index) {
-                return ListTile(
-                  leading: CircleAvatar(
-                    backgroundColor: const Color(0xffd3273e),
-                    foregroundColor: Colors.white,
-                    child: Text(admins[index]['name'].toString().substring(0, 1)),
-                  ),
-                  title: Text(
-                    admins[index]['name'],
-                    style: const TextStyle(color: Colors.white),
-                  ),
-                  subtitle: Text(
-                    'Admin since ${DateFormat.yMd().format(admins[index]['memberDate'])}',
-                    style: const TextStyle(color: Colors.white),
-                  ),
-                  trailing: const Icon(Icons.more_horiz, color: Colors.white,),
-                );
-              },
+            admins.isNotEmpty ? AdminsListView(list: admins) : Container(
+              alignment: Alignment.centerLeft,
+              padding: const EdgeInsets.only(left: 15.0),
+              child: const Text(
+                'No Admins',
+                style: TextStyle(color: Colors.white, fontSize: 18),
+              ),
             ),
             Container(
               alignment: Alignment.centerLeft,
@@ -141,7 +127,7 @@ class _AdminPageState extends State<AdminPage> {
                 children: [
                   const Text(
                     'Moderators',
-                    style: TextStyle(color: Colors.white, fontSize: 20),
+                    style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   IconButton(
                     onPressed: () {},
@@ -150,28 +136,13 @@ class _AdminPageState extends State<AdminPage> {
                 ],
               ),
             ),
-            ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: moderators.length,
-              itemBuilder: (BuildContext context, int index) {
-                return ListTile(
-                  leading: CircleAvatar(
-                    backgroundColor: const Color(0xffd3273e),
-                    foregroundColor: Colors.white,
-                    child: Text(moderators[index]['name'].toString().substring(0, 1)),
-                  ),
-                  title: Text(
-                    moderators[index]['name'],
-                    style: const TextStyle(color: Colors.white),
-                  ),
-                  subtitle: Text(
-                    'Admin since ${DateFormat.yMd().format(moderators[index]['memberDate'])}',
-                    style: const TextStyle(color: Colors.white),
-                  ),
-                  trailing: const Icon(Icons.more_horiz, color: Colors.white,),
-                );
-              },
+            moderators.isNotEmpty ? AdminsListView(list: moderators) : Container(
+              alignment: Alignment.centerLeft,
+              padding: const EdgeInsets.only(left: 15.0),
+              child: const Text(
+                'No Moderators',
+                style: TextStyle(color: Colors.white, fontSize: 18),
+              ),
             ),
             Container(
               alignment: Alignment.centerLeft,
@@ -180,7 +151,7 @@ class _AdminPageState extends State<AdminPage> {
                 children: [
                   const Text(
                     'Coaches',
-                    style: TextStyle(color: Colors.white, fontSize: 20),
+                    style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   IconButton(
                     onPressed: () {},
@@ -189,28 +160,13 @@ class _AdminPageState extends State<AdminPage> {
                 ],
               ),
             ),
-            ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: coaches.length,
-              itemBuilder: (BuildContext context, int index) {
-                return ListTile(
-                  leading: CircleAvatar(
-                    backgroundColor: const Color(0xffd3273e),
-                    foregroundColor: Colors.white,
-                    child: Text(coaches[index]['name'].toString().substring(0, 1)),
-                  ),
-                  title: Text(
-                    coaches[index]['name'],
-                    style: const TextStyle(color: Colors.white),
-                  ),
-                  subtitle: Text(
-                    'Admin since ${DateFormat.yMd().format(coaches[index]['memberDate'])}',
-                    style: const TextStyle(color: Colors.white),
-                  ),
-                  trailing: const Icon(Icons.more_horiz, color: Colors.white,),
-                );
-              },
+            coaches.isNotEmpty ? AdminsListView(list: coaches) : Container(
+              alignment: Alignment.centerLeft,
+              padding: const EdgeInsets.only(left: 15.0),
+              child: const Text(
+                'No Coaches',
+                style: TextStyle(color: Colors.white, fontSize: 18),
+              ),
             ),
           ],
         ),
