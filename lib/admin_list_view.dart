@@ -105,6 +105,63 @@ class _AdminListViewState extends State<AdminListView> {
     );
   }
 
+  /// modal popup that asks to confirm you are removing admin level
+  void showModalRemoveAdmin(String level, int index) {
+    showCupertinoModalPopup(
+        context: context,
+        builder: (BuildContext context) {
+          return CupertinoAlertDialog(
+            title: Text('Remove from ${level}s?'),
+            content: Text('Are you sure you want to remove this user\'s $level privileges?'),
+            actions: [
+              CupertinoDialogAction(
+                isDefaultAction: true,
+                onPressed: () {
+                  setState(() {
+                    // removing the user from their admin level
+                    widget.mainList.removeAt(index);
+                  });
+
+                  Navigator.pop(context);
+
+                  showModalAdminRemoved(level);
+                },
+                child: Text('Remove $level'),
+              ),
+              CupertinoDialogAction(
+                isDestructiveAction: true,
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('Cancel'),
+              ),
+            ],
+          );
+        }
+    );
+  }
+
+  /// modal popup that let's you know that the user is no longer an admin
+  void showModalAdminRemoved(String level) {
+    showCupertinoModalPopup(
+        context: context,
+        builder: (BuildContext context) {
+          return CupertinoAlertDialog(
+            title: Text('$level Removed'),
+            content: level == 'Admin' ? Text('The user is no longer an $level') : Text('The user is no longer a $level.'),
+            actions: [
+              CupertinoDialogAction(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('Close'),
+              ),
+            ],
+          );
+        }
+    );
+  }
+
   /// Assign a user to specified admin level
   CupertinoActionSheetAction assignAdminAction(String level, int index) {
     return CupertinoActionSheetAction(
@@ -123,11 +180,9 @@ class _AdminListViewState extends State<AdminListView> {
       isDestructiveAction: true,
       child: const Text('Remove'),
       onPressed: () {
-        setState(() {
-          widget.mainList.removeAt(index);
-        });
-
         Navigator.pop(context);
+
+        showModalRemoveAdmin(widget.mainList[index]['level'], index);
       },
     );
   }
