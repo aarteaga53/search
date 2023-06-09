@@ -59,6 +59,77 @@ class _SearchPageState extends State<SearchPage> {
     });
   }
 
+  /// modal popup that asks to confirm you are assigning a user admin level
+  void showModalAssignAdmin(String level, int index) {
+    showCupertinoModalPopup(
+        context: context,
+        builder: (BuildContext context) {
+          return CupertinoAlertDialog(
+            title: Text('Assign as $level?'),
+            content: Text('Are you sure you want to give this user $level privileges?'),
+            actions: [
+              CupertinoDialogAction(
+                isDefaultAction: true,
+                onPressed: () {
+                  setState(() {
+                    filterUsers[index]['level'] = level;
+
+                    switch(level) {
+                      case 'Admin':
+                        widget.admins.add(filterUsers[index]);
+                        break;
+                      case 'Moderator':
+                        widget.moderators.add(filterUsers[index]);
+                        break;
+                      case 'Coach':
+                        widget.coaches.add(filterUsers[index]);
+                        break;
+                    }
+
+                    users.remove(filterUsers[index]);
+                    filterUsers.removeAt(index);
+                  });
+
+                  Navigator.pop(context);
+
+                  showModalAdmin(level);
+                },
+                child: Text('Assign as $level'),
+              ),
+              CupertinoDialogAction(
+                isDestructiveAction: true,
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('Cancel'),
+              ),
+            ],
+          );
+        }
+    );
+  }
+
+  /// modal popup that let's you know that the user has been assigned an admin level
+  void showModalAdmin(String level) {
+    showCupertinoModalPopup(
+        context: context,
+        builder: (BuildContext context) {
+          return CupertinoAlertDialog(
+            title: Text('$level Added'),
+            content: level == 'Admin' ? Text('The user is now an $level') : Text('The user is now a $level.'),
+            actions: [
+              CupertinoDialogAction(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('Close'),
+              ),
+            ],
+          );
+        }
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -142,38 +213,7 @@ class _SearchPageState extends State<SearchPage> {
                                 onPressed: () {
                                   Navigator.pop(context);
 
-                                  showCupertinoModalPopup(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return CupertinoAlertDialog(
-                                        title: const Text('Assign as Admin?'),
-                                        content: const Text('Are you sure you want to give this user Admin privileges?'),
-                                        actions: [
-                                          CupertinoDialogAction(
-                                            isDefaultAction: true,
-                                            onPressed: () {
-                                              setState(() {
-                                                filterUsers[index]['level'] = 'Admin';
-                                                widget.admins.add(filterUsers[index]);
-                                                users.remove(filterUsers[index]);
-                                                filterUsers.removeAt(index);
-                                              });
-
-                                              Navigator.pop(context);
-                                            },
-                                            child: const Text('Assign as Admin'),
-                                          ),
-                                          CupertinoDialogAction(
-                                            isDestructiveAction: true,
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                            },
-                                            child: const Text('Cancel'),
-                                          ),
-                                        ],
-                                      );
-                                    }
-                                  );
+                                  showModalAssignAdmin('Admin', index);
                                 },
                               ),
                               CupertinoActionSheetAction(
@@ -181,38 +221,7 @@ class _SearchPageState extends State<SearchPage> {
                                 onPressed: () {
                                   Navigator.pop(context);
 
-                                  showCupertinoModalPopup(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return CupertinoAlertDialog(
-                                          title: const Text('Assign as Moderator?'),
-                                          content: const Text('Are you sure you want to give this user Moderator privileges?'),
-                                          actions: [
-                                            CupertinoDialogAction(
-                                              isDefaultAction: true,
-                                              onPressed: () {
-                                                setState(() {
-                                                  filterUsers[index]['level'] = 'Moderator';
-                                                  widget.moderators.add(filterUsers[index]);
-                                                  users.remove(filterUsers[index]);
-                                                  filterUsers.removeAt(index);
-                                                });
-
-                                                Navigator.pop(context);
-                                              },
-                                              child: const Text('Assign as Moderator'),
-                                            ),
-                                            CupertinoDialogAction(
-                                              isDestructiveAction: true,
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                              child: const Text('Cancel'),
-                                            ),
-                                          ],
-                                        );
-                                      }
-                                  );
+                                  showModalAssignAdmin('Moderator', index);
                                 },
                               ),
                               CupertinoActionSheetAction(
@@ -220,38 +229,7 @@ class _SearchPageState extends State<SearchPage> {
                                 onPressed: () {
                                   Navigator.pop(context);
 
-                                  showCupertinoModalPopup(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return CupertinoAlertDialog(
-                                          title: const Text('Assign as Coach?'),
-                                          content: const Text('Are you sure you want to give this user Coach privileges?'),
-                                          actions: [
-                                            CupertinoDialogAction(
-                                              isDefaultAction: true,
-                                              onPressed: () {
-                                                setState(() {
-                                                  filterUsers[index]['level'] = 'Coach';
-                                                  widget.coaches.add(filterUsers[index]);
-                                                  users.remove(filterUsers[index]);
-                                                  filterUsers.removeAt(index);
-                                                });
-
-                                                Navigator.pop(context);
-                                              },
-                                              child: const Text('Assign as Coach'),
-                                            ),
-                                            CupertinoDialogAction(
-                                              isDestructiveAction: true,
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                              child: const Text('Cancel'),
-                                            ),
-                                          ],
-                                        );
-                                      }
-                                  );
+                                  showModalAssignAdmin('Coach', index);
                                 },
                               ),
                             ],
