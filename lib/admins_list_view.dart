@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -29,7 +30,48 @@ class AdminsListView extends StatelessWidget {
             style: const TextStyle(color: Colors.white),
           ),
           trailing: IconButton(
-            onPressed: () {},
+            onPressed: () {
+              showCupertinoModalPopup(
+                context: context,
+                builder: (BuildContext context) {
+                  return CupertinoActionSheet(
+                    title: Text('${list[index]['level']} - ${list[index]['name'].substring(0, list[index]['name'].indexOf(' '))}'),
+                    actions: <CupertinoActionSheetAction>[
+                      CupertinoActionSheetAction(
+                        child: const Text('Assign as Admin'),
+                        onPressed: () {
+
+
+                          Navigator.pop(context);
+                        },
+                      ),
+                      CupertinoActionSheetAction(
+                        child: const Text('Assign as Moderator'),
+                        onPressed: () {
+
+
+                          Navigator.pop(context);
+                        },
+                      ),
+                      CupertinoActionSheetAction(
+                        child: const Text('Assign as Coach'),
+                        onPressed: () {
+
+
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ],
+                    cancelButton: CupertinoActionSheetAction(
+                      child: const Text('Cancel'),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  );
+                },
+              );
+            },
             icon: const Icon(Icons.more_horiz, color: Colors.white, size: 36,),
           ),
         );

@@ -12,34 +12,35 @@ class AdminPage extends StatefulWidget {
 
 class _AdminPageState extends State<AdminPage> {
 
+  // dummy data for admin users
   List admins = [
     {
       "name": "Chuka Ikokwu",
-      "level": "admin",
+      "level": "Admin",
       "memberDate": DateTime.now(),
     },
     {
       "name": "Shaela Druyon",
-      "level": "admin",
+      "level": "Admin",
       "memberDate": DateTime.now(),
     }
   ];
   List moderators = [
     {
       "name": "Shushmitha Ganesh",
-      "level": "moderator",
+      "level": "Moderator",
       "memberDate": DateTime.now(),
     },
     {
       "name": "Jorge Morataya",
-      "level": "moderator",
+      "level": "Moderator",
       "memberDate": DateTime.now(),
     }
   ];
   List coaches = [
     {
       "name": "Ben Nguyen",
-      "level": "coach",
+      "level": "Coach",
       "memberDate": DateTime.now(),
     }
   ];
@@ -120,14 +121,7 @@ class _AdminPageState extends State<AdminPage> {
                 ],
               ),
             ),
-            admins.isNotEmpty ? AdminsListView(list: admins) : Container(
-              alignment: Alignment.centerLeft,
-              padding: const EdgeInsets.only(left: 15.0),
-              child: const Text(
-                'No Admins',
-                style: TextStyle(color: Colors.white, fontSize: 18),
-              ),
-            ),
+            admins.isNotEmpty ? AdminsListView(list: admins) : EmptyList(title: 'No Admins'),
             Container(
               alignment: Alignment.centerLeft,
               padding: const EdgeInsets.only(left: 15.0),
@@ -153,14 +147,7 @@ class _AdminPageState extends State<AdminPage> {
                 ],
               ),
             ),
-            moderators.isNotEmpty ? AdminsListView(list: moderators) : Container(
-              alignment: Alignment.centerLeft,
-              padding: const EdgeInsets.only(left: 15.0),
-              child: const Text(
-                'No Moderators',
-                style: TextStyle(color: Colors.white, fontSize: 18),
-              ),
-            ),
+            moderators.isNotEmpty ? AdminsListView(list: moderators) : EmptyList(title: 'No Moderators'),
             Container(
               alignment: Alignment.centerLeft,
               padding: const EdgeInsets.only(left: 15.0),
@@ -186,16 +173,29 @@ class _AdminPageState extends State<AdminPage> {
                 ],
               ),
             ),
-            coaches.isNotEmpty ? AdminsListView(list: coaches) : Container(
-              alignment: Alignment.centerLeft,
-              padding: const EdgeInsets.only(left: 15.0),
-              child: const Text(
-                'No Coaches',
-                style: TextStyle(color: Colors.white, fontSize: 18),
-              ),
-            ),
+            coaches.isNotEmpty ? AdminsListView(list: coaches) : EmptyList(title: 'No Coaches'),
           ],
         ),
+      ),
+    );
+  }
+}
+
+/// Container class to display that there are no admins for a specific group
+//ignore: must_be_immutable
+class EmptyList extends StatelessWidget {
+  String title;
+  
+  EmptyList({Key? key, required this.title}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.centerLeft,
+      padding: const EdgeInsets.only(left: 15.0),
+      child: Text(
+        title,
+        style: const TextStyle(color: Colors.white, fontSize: 18),
       ),
     );
   }
