@@ -45,6 +45,18 @@ class _SearchPageState extends State<SearchPage> {
     },
   ];
   List filterUsers = [];
+  bool isSearching = false;
+  FocusNode textFocus = FocusNode();
+
+  void updateIsSearching() {
+    setState(() {
+      isSearching = !isSearching;
+
+      if(!isSearching) {
+        textFocus.unfocus();
+      }
+    });
+  }
 
   /// Searches for users in the list that fit the name being searched for
   void updateSearch(String searchName) {
@@ -151,36 +163,50 @@ class _SearchPageState extends State<SearchPage> {
         children: [
           Container(
             padding: const EdgeInsets.all(10.0),
-            child: TextField(
-              onChanged: updateSearch,
-              style: const TextStyle(color: Colors.white),
-              cursorColor: Colors.grey,
-              decoration: InputDecoration(
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: const BorderSide(
-                    color: Color(0xff333333),
-                    width: 0.0,
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    onChanged: updateSearch,
+                    onTap: updateIsSearching,
+                    focusNode: textFocus,
+                    style: const TextStyle(color: Colors.white),
+                    cursorColor: Colors.grey,
+                    decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide: const BorderSide(
+                          color: Color(0xff333333),
+                          width: 0.0,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide: const BorderSide(
+                          color: Color(0xff333333),
+                          width: 0.0,
+                        ),
+                      ),
+                      labelText: 'Search for a user...',
+                      labelStyle: const TextStyle(
+                        color: Colors.grey,
+                      ),
+                      contentPadding: const EdgeInsets.all(0),
+                      floatingLabelBehavior: FloatingLabelBehavior.never,
+                      filled: true,
+                      fillColor: const Color(0xff333333),
+                      prefixIcon: const Icon(CupertinoIcons.search),
+                      prefixIconColor: Colors.grey,
+                      suffixIcon: isSearching ? IconButton(onPressed: updateIsSearching, icon: const Icon(CupertinoIcons.xmark_circle_fill)) : null,
+                      suffixIconColor: Colors.grey,
+                    ),
                   ),
                 ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: const BorderSide(
-                    color: Color(0xff333333),
-                    width: 0.0,
-                  ),
-                ),
-                labelText: 'Search for a user...',
-                labelStyle: const TextStyle(
-                  color: Colors.grey,
-                ),
-                contentPadding: const EdgeInsets.all(0),
-                floatingLabelBehavior: FloatingLabelBehavior.never,
-                filled: true,
-                fillColor: const Color(0xff333333),
-                prefixIcon: const Icon(Icons.search),
-                prefixIconColor: Colors.grey,
-              ),
+                isSearching ? TextButton(
+                  onPressed: updateIsSearching,
+                  child: const Text('Cancel'),
+                ) : Container()
+              ],
             ),
           ),
           Expanded(

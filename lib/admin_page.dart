@@ -44,6 +44,38 @@ class _AdminPageState extends State<AdminPage> {
       "memberDate": DateTime.now(),
     }
   ];
+  List filterAdmins = [];
+  List filterModerators = [];
+  List filterCoaches = [];
+  bool isSearching = false;
+  FocusNode textFocus = FocusNode();
+
+  void updateIsSearching() {
+    setState(() {
+      isSearching = !isSearching;
+
+      if(!isSearching) {
+        textFocus.unfocus();
+      }
+    });
+  }
+
+  /// Searches for users in the list that fit the name being searched for
+  void updateSearch(String searchName) {
+    setState(() {
+      if(searchName != '') {
+        // checks that the search name length is less than the user's name to avoid errors
+        // checks that the each letter in the search name is in the user's name in the same order
+        filterAdmins = admins.where((element) => element['name'].length >= searchName.length && element['name'].toLowerCase().substring(0, searchName.length) == searchName.toLowerCase()).toList();
+        filterModerators = moderators.where((element) => element['name'].length >= searchName.length && element['name'].toLowerCase().substring(0, searchName.length) == searchName.toLowerCase()).toList();
+        filterCoaches = coaches.where((element) => element['name'].length >= searchName.length && element['name'].toLowerCase().substring(0, searchName.length) == searchName.toLowerCase()).toList();
+      } else {
+        filterAdmins = [];
+        filterModerators = [];
+        filterCoaches = [];
+      }
+    });
+  }
 
   void updateAdmins(List newAdmins) {
     setState(() {
@@ -86,7 +118,7 @@ class _AdminPageState extends State<AdminPage> {
             level,
             style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
           ),
-          IconButton(
+          isSearching ? Container() : IconButton(
             onPressed: () async {
               await Navigator.push(
                   context,
@@ -124,43 +156,80 @@ class _AdminPageState extends State<AdminPage> {
           children: [
             Container(
               padding: const EdgeInsets.all(10.0),
-              child: TextField(
-                style: const TextStyle(color: Colors.white),
-                cursorColor: Colors.grey,
-                decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                    borderSide: const BorderSide(
-                      color: Color(0xff333333),
-                      width: 0.0,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      onChanged: updateSearch,
+                      onTap: updateIsSearching,
+                      focusNode: textFocus,
+                      style: const TextStyle(color: Colors.white),
+                      cursorColor: Colors.grey,
+                      decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: const BorderSide(
+                            color: Color(0xff333333),
+                            width: 0.0,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: const BorderSide(
+                            color: Color(0xff333333),
+                            width: 0.0,
+                          ),
+                        ),
+                        labelText: 'Search',
+                        labelStyle: const TextStyle(
+                          color: Colors.grey,
+                        ),
+                        contentPadding: const EdgeInsets.all(0),
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
+                        filled: true,
+                        fillColor: const Color(0xff333333),
+                        prefixIcon: const Icon(Icons.search),
+                        prefixIconColor: Colors.grey,
+                        suffixIcon: isSearching ? IconButton(onPressed: updateIsSearching, icon: const Icon(CupertinoIcons.xmark_circle_fill)) : null,
+                        suffixIconColor: Colors.grey,
+                      ),
                     ),
                   ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                    borderSide: const BorderSide(
-                      color: Color(0xff333333),
-                      width: 0.0,
-                    ),
-                  ),
-                  labelText: 'Search',
-                  labelStyle: const TextStyle(
-                    color: Colors.grey,
-                  ),
-                  contentPadding: const EdgeInsets.all(0),
-                  floatingLabelBehavior: FloatingLabelBehavior.never,
-                  filled: true,
-                  fillColor: const Color(0xff333333),
-                  prefixIcon: const Icon(Icons.search),
-                  prefixIconColor: Colors.grey,
-                ),
+                  isSearching ? TextButton(onPressed: updateIsSearching, child: const Text('Cancel')) : Container()
+                ],
               ),
             ),
-            titleList('Admins'),
-            admins.isNotEmpty ? AdminListView(admins, moderators, coaches, updateAdmins, updateModerators, updateCoaches) : emptyList('No Admins'),
-            titleList('Moderators'),
-            moderators.isNotEmpty ? AdminListView(moderators, admins, coaches, updateAdmins, updateModerators, updateCoaches) : emptyList('No Moderators'),
-            titleList('Coaches'),
-            coaches.isNotEmpty ? AdminListView(coaches, admins, moderators, updateAdmins, updateModerators, updateCoaches) : emptyList('No Coaches'),
+            isSearching ? Wrap(
+              children: [
+                filterAdmins.isNotEmpty ? Wrap(
+                  children: [
+                    titleList('Admins'),
+                    AdminListView(filterAdmins, moderators, coaches, updateAdmins, updateModerators, updateCoaches)
+                  ],
+                ) : Container(),
+                filterModerators.isNotEmpty ? Wrap(
+                  children: [
+                    titleList('Moderators'),
+                    AdminListView(filterModerators, admins, coaches, updateAdmins, updateModerators, updateCoaches)
+                  ],
+                ) : Container(),
+                filterCoaches.isNotEmpty ? Wrap(
+                  children: [
+                    titleList('Coaches'),
+                    AdminListView(filterCoaches, admins, moderators, updateAdmins, updateModerators, updateCoaches)
+                  ],
+                ) : Container(),
+              ],
+            ) : Wrap(
+              children: [
+                titleList('Admins'),
+                admins.isNotEmpty ? AdminListView(admins, moderators, coaches, updateAdmins, updateModerators, updateCoaches) : emptyList('No Admins'),
+                titleList('Moderators'),
+                moderators.isNotEmpty ? AdminListView(moderators, admins, coaches, updateAdmins, updateModerators, updateCoaches) : emptyList('No Moderators'),
+                titleList('Coaches'),
+                coaches.isNotEmpty ? AdminListView(coaches, admins, moderators, updateAdmins, updateModerators, updateCoaches) : emptyList('No Coaches'),
+              ],
+            ),
           ],
         ),
       ),
