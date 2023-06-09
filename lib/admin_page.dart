@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:search/admins_list_view.dart';
+import 'package:search/admin_list_view.dart';
 import 'package:search/search_page.dart';
 
 class AdminPage extends StatefulWidget {
@@ -138,11 +138,11 @@ class _AdminPageState extends State<AdminPage> {
               ),
             ),
             titleList('Admins'),
-            admins.isNotEmpty ? AdminsListView(list: admins) : emptyList('No Admins'),
+            admins.isNotEmpty ? AdminListView(admins, moderators, coaches,) : emptyList('No Admins'),
             titleList('Moderators'),
-            moderators.isNotEmpty ? AdminsListView(list: moderators) : emptyList('No Moderators'),
+            moderators.isNotEmpty ? AdminListView(moderators, admins, coaches,) : emptyList('No Moderators'),
             titleList('Coaches'),
-            coaches.isNotEmpty ? AdminsListView(list: coaches) : emptyList('No Coaches'),
+            coaches.isNotEmpty ? AdminListView(coaches, admins, moderators,) : emptyList('No Coaches'),
           ],
         ),
       ),
