@@ -1,5 +1,5 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:search/admins_list_view.dart';
 import 'package:search/search_page.dart';
 
@@ -15,26 +15,31 @@ class _AdminPageState extends State<AdminPage> {
   List admins = [
     {
       "name": "Chuka Ikokwu",
+      "level": "admin",
       "memberDate": DateTime.now(),
     },
     {
       "name": "Shaela Druyon",
+      "level": "admin",
       "memberDate": DateTime.now(),
     }
   ];
   List moderators = [
     {
       "name": "Shushmitha Ganesh",
+      "level": "moderator",
       "memberDate": DateTime.now(),
     },
     {
       "name": "Jorge Morataya",
+      "level": "moderator",
       "memberDate": DateTime.now(),
     }
   ];
   List coaches = [
     {
       "name": "Ben Nguyen",
+      "level": "coach",
       "memberDate": DateTime.now(),
     }
   ];
@@ -50,7 +55,7 @@ class _AdminPageState extends State<AdminPage> {
         actions: [
           IconButton(
             onPressed: () {},
-            icon: const Icon(Icons.heart_broken),
+            icon: const Icon(CupertinoIcons.heart_fill),
           ),
         ],
       ),
@@ -60,13 +65,7 @@ class _AdminPageState extends State<AdminPage> {
             Container(
               padding: const EdgeInsets.all(10.0),
               child: TextField(
-                readOnly: true,
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const SearchPage())
-                  );
-                },
+                style: const TextStyle(color: Colors.white),
                 cursorColor: Colors.grey,
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
@@ -106,7 +105,16 @@ class _AdminPageState extends State<AdminPage> {
                     style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      await Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => SearchPage(admins, moderators, coaches))
+                      );
+
+                      setState(() {
+
+                      });
+                    },
                     icon: const Icon(Icons.add_circle, color: Colors.white),
                   ),
                 ],
@@ -130,7 +138,16 @@ class _AdminPageState extends State<AdminPage> {
                     style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      await Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => SearchPage(admins, moderators, coaches))
+                      );
+
+                      setState(() {
+
+                      });
+                    },
                     icon: const Icon(Icons.add_circle, color: Colors.white),
                   ),
                 ],
@@ -154,7 +171,16 @@ class _AdminPageState extends State<AdminPage> {
                     style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      await Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => SearchPage(admins, moderators, coaches))
+                      );
+
+                      setState(() {
+
+                      });
+                    },
                     icon: const Icon(Icons.add_circle, color: Colors.white),
                   ),
                 ],

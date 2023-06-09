@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:search/admin_page.dart';
 
@@ -47,7 +48,7 @@ class _MyHomePageState extends State<MyHomePage> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.people_outline),
+            icon: Icon(CupertinoIcons.person_2),
             label: 'Admin',
             backgroundColor: Colors.black,
           ),
@@ -57,12 +58,12 @@ class _MyHomePageState extends State<MyHomePage> {
             backgroundColor: Colors.black,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.messenger),
+            icon: Icon(CupertinoIcons.bubble_left_fill),
             label: 'Chat',
             backgroundColor: Colors.black,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.check_circle_outline),
+            icon: Icon(CupertinoIcons.check_mark_circled),
             label: 'Pending',
             backgroundColor: Colors.black,
           ),

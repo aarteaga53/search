@@ -1,8 +1,14 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+//ignore: must_be_immutable
 class SearchPage extends StatefulWidget {
-  const SearchPage({Key? key}) : super(key: key);
+  List admins;
+  List moderators;
+  List coaches;
+
+  SearchPage(this.admins, this.moderators, this.coaches, {Key? key}) : super(key: key);
 
   @override
   State<SearchPage> createState() => _SearchPageState();
@@ -13,23 +19,28 @@ class _SearchPageState extends State<SearchPage> {
   // dummy data for a list of users
   List users = [
     {
-      "name": "Chuka Ikokwu",
+      "name": "Joanne Robinson",
+      "level": "none",
       "memberDate": DateTime.now(),
     },
     {
-      "name": "Shaela Druyon",
+      "name": "Joe Mike",
+      "level": "none",
       "memberDate": DateTime.now(),
     },
     {
-      "name": "Shushmitha Ganesh",
+      "name": "John Jameson",
+      "level": "none",
       "memberDate": DateTime.now(),
     },
     {
-      "name": "Jorge Morataya",
+      "name": "John Johnson",
+      "level": "none",
       "memberDate": DateTime.now(),
     },
     {
-      "name": "Ben Nguyen",
+      "name": "Joseph Smith",
+      "level": "none",
       "memberDate": DateTime.now(),
     },
   ];
@@ -59,7 +70,7 @@ class _SearchPageState extends State<SearchPage> {
         actions: [
           IconButton(
             onPressed: () {},
-            icon: const Icon(Icons.heart_broken),
+            icon: const Icon(CupertinoIcons.heart_fill),
           ),
         ],
       ),
@@ -115,10 +126,70 @@ class _SearchPageState extends State<SearchPage> {
                     style: const TextStyle(color: Colors.white),
                   ),
                   subtitle: Text(
-                    'Admin since ${DateFormat.yMd().format(filterUsers[index]['memberDate'])}',
+                    'Member since ${DateFormat.yMd().format(filterUsers[index]['memberDate'])}',
                     style: const TextStyle(color: Colors.white),
                   ),
-                  trailing: const Icon(Icons.more_horiz, color: Colors.white,),
+                  trailing: IconButton(
+                    onPressed: () {
+                      showCupertinoModalPopup(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return CupertinoActionSheet(
+                            title: Text(filterUsers[index]['name']),
+                            actions: <CupertinoActionSheetAction>[
+                              CupertinoActionSheetAction(
+                                child: const Text('Assign Admin'),
+                                onPressed: () {
+                                  setState(() {
+                                    filterUsers[index]['level'] = 'admin';
+                                    widget.admins.add(filterUsers[index]);
+                                    users.remove(filterUsers[index]);
+                                    filterUsers.removeAt(index);
+                                  });
+
+                                  Navigator.pop(context);
+                                },
+                              ),
+                              CupertinoActionSheetAction(
+                                child: const Text('Assign Moderator'),
+                                onPressed: () {
+                                  setState(() {
+                                    filterUsers[index]['level'] = 'moderator';
+                                    widget.moderators.add(filterUsers[index]);
+                                    users.remove(filterUsers[index]);
+                                    filterUsers.removeAt(index);
+                                  });
+
+                                  Navigator.pop(context);
+                                },
+                              ),
+                              CupertinoActionSheetAction(
+                                child: const Text('Assign Coach'),
+                                onPressed: () {
+                                  setState(() {
+                                    filterUsers[index]['level'] = 'coach';
+                                    widget.coaches.add(filterUsers[index]);
+                                    users.remove(filterUsers[index]);
+                                    filterUsers.removeAt(index);
+                                  });
+
+                                  Navigator.pop(context);
+                                },
+                              ),
+                            ],
+                            cancelButton: CupertinoActionSheetAction(
+                              isDestructiveAction: true,
+                              child: const Text('Cancel'),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                            ),
+                          );
+                        },
+                      );
+                    },
+                    icon: const Icon(Icons.more_horiz, color: Colors.white, size: 36),
+                  ),
                 );
               },
             ),
