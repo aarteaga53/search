@@ -4,11 +4,14 @@ import 'package:intl/intl.dart';
 
 //ignore: must_be_immutable
 class AdminListView extends StatefulWidget {
-  List mainList;
-  List secondList;
-  List thirdList;
+  List mainList; // admin, moderator, coach
+  List secondList; // moderator, admin, admin
+  List thirdList; // coach, coach, moderator
+  void Function(List newAdmins) updateAdmins;
+  void Function(List newModerators) updateModerators;
+  void Function(List newCoaches) updateCoaches;
 
-  AdminListView(this.mainList, this.secondList, this.thirdList, {Key? key}) : super(key: key);
+  AdminListView(this.mainList, this.secondList, this.thirdList, this.updateAdmins, this.updateModerators, this.updateCoaches, {Key? key}) : super(key: key);
 
   @override
   State<AdminListView> createState() => _AdminListViewState();
@@ -16,38 +19,100 @@ class AdminListView extends StatefulWidget {
 
 class _AdminListViewState extends State<AdminListView> {
 
-  /// Assign a user to admin level
-  CupertinoActionSheetAction assignAdminAction() {
-    return CupertinoActionSheetAction(
-      child: const Text('Assign as Admin'),
-      onPressed: () {
+  /// modal popup that asks to confirm you are assigning a user admin level
+  void showModalAssignAdmin(String level, int index) {
+    showCupertinoModalPopup(
+        context: context,
+        builder: (BuildContext context) {
+          return CupertinoAlertDialog(
+            title: Text('Assign as $level?'),
+            content: Text('Are you sure you want to give this user $level privileges?'),
+            actions: [
+              CupertinoDialogAction(
+                isDefaultAction: true,
+                onPressed: () {
+                  setState(() {
+                    String curLevel = widget.mainList[index]['level']; // current admin level
+                    widget.mainList[index]['level'] = level; // changing the user's admin level
 
+                    // adds user to new admin level list and updates the list
+                    switch(level) {
+                      case 'Admin':
+                        widget.secondList.add(widget.mainList[index]);
+                        widget.updateAdmins(widget.secondList);
+                        break;
+                      case 'Moderator':
+                        switch(curLevel) {
+                          case 'Admin':
+                            widget.secondList.add(widget.mainList[index]);
+                            widget.updateModerators(widget.secondList);
+                            break;
+                          case 'Coach':
+                            widget.thirdList.add(widget.mainList[index]);
+                            widget.updateModerators(widget.thirdList);
+                            break;
+                          default:
+                            break;
+                        }
+                        break;
+                      case 'Coach':
+                        widget.thirdList.add(widget.mainList[index]);
+                        widget.updateCoaches(widget.thirdList);
+                        break;
+                    }
 
-        Navigator.pop(context);
-      },
+                    // removing the user from their old admin level list
+                    widget.mainList.removeAt(index);
+                  });
+
+                  Navigator.pop(context);
+
+                  showModalAdmin(level);
+                },
+                child: Text('Assign as $level'),
+              ),
+              CupertinoDialogAction(
+                isDestructiveAction: true,
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('Cancel'),
+              ),
+            ],
+          );
+        }
     );
   }
 
-  /// Assign a user to moderator level
-  CupertinoActionSheetAction assignModeratorAction() {
-    return CupertinoActionSheetAction(
-      child: const Text('Assign as Moderator'),
-      onPressed: () {
-
-
-        Navigator.pop(context);
-      },
+  /// modal popup that let's you know that the user has been assigned an admin level
+  void showModalAdmin(String level) {
+    showCupertinoModalPopup(
+        context: context,
+        builder: (BuildContext context) {
+          return CupertinoAlertDialog(
+            title: Text('$level Added'),
+            content: level == 'Admin' ? Text('The user is now an $level') : Text('The user is now a $level.'),
+            actions: [
+              CupertinoDialogAction(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('Close'),
+              ),
+            ],
+          );
+        }
     );
   }
 
-  /// Assign a user to coach level
-  CupertinoActionSheetAction assignCoachAction() {
+  /// Assign a user to specified admin level
+  CupertinoActionSheetAction assignAdminAction(String level, int index) {
     return CupertinoActionSheetAction(
-      child: const Text('Assign as Coach'),
+      child: Text('Assign as $level'),
       onPressed: () {
-
-
         Navigator.pop(context);
+
+        showModalAssignAdmin(level, index);
       },
     );
   }
@@ -71,11 +136,11 @@ class _AdminListViewState extends State<AdminListView> {
   List<CupertinoActionSheetAction> showModalActions(int index) {
     switch(widget.mainList[index]['level']) {
       case 'Admin':
-        return <CupertinoActionSheetAction>[assignModeratorAction(), assignCoachAction(), removeAdminAction(index)];
+        return <CupertinoActionSheetAction>[assignAdminAction('Moderator', index), assignAdminAction('Coach', index), removeAdminAction(index)];
       case 'Moderator':
-        return <CupertinoActionSheetAction>[assignAdminAction(), assignCoachAction(), removeAdminAction(index)];
+        return <CupertinoActionSheetAction>[assignAdminAction('Admin', index), assignAdminAction('Coach', index), removeAdminAction(index)];
       case 'Coach':
-        return <CupertinoActionSheetAction>[assignAdminAction(), assignModeratorAction(), removeAdminAction(index)];
+        return <CupertinoActionSheetAction>[assignAdminAction('Admin', index), assignAdminAction('Moderator', index), removeAdminAction(index)];
       default:
         return <CupertinoActionSheetAction>[];
     }
@@ -124,6 +189,6 @@ class _AdminListViewState extends State<AdminListView> {
           ),
         );
       },
-    );;
+    );
   }
 }

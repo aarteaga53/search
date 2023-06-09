@@ -45,6 +45,24 @@ class _AdminPageState extends State<AdminPage> {
     }
   ];
 
+  void updateAdmins(List newAdmins) {
+    setState(() {
+      admins = newAdmins;
+    });
+  }
+
+  void updateModerators(List newModerators) {
+    setState(() {
+      moderators = newModerators;
+    });
+  }
+
+  void updateCoaches(List newCoaches) {
+    setState(() {
+      coaches = newCoaches;
+    });
+  }
+
   /// container that displays message when no users are in a certain admin level
   Container emptyList(String title) {
     return Container(
@@ -138,11 +156,11 @@ class _AdminPageState extends State<AdminPage> {
               ),
             ),
             titleList('Admins'),
-            admins.isNotEmpty ? AdminListView(admins, moderators, coaches,) : emptyList('No Admins'),
+            admins.isNotEmpty ? AdminListView(admins, moderators, coaches, updateAdmins, updateModerators, updateCoaches) : emptyList('No Admins'),
             titleList('Moderators'),
-            moderators.isNotEmpty ? AdminListView(moderators, admins, coaches,) : emptyList('No Moderators'),
+            moderators.isNotEmpty ? AdminListView(moderators, admins, coaches, updateAdmins, updateModerators, updateCoaches) : emptyList('No Moderators'),
             titleList('Coaches'),
-            coaches.isNotEmpty ? AdminListView(coaches, admins, moderators,) : emptyList('No Coaches'),
+            coaches.isNotEmpty ? AdminListView(coaches, admins, moderators, updateAdmins, updateModerators, updateCoaches) : emptyList('No Coaches'),
           ],
         ),
       ),
