@@ -72,8 +72,9 @@ class _SearchPageState extends State<SearchPage> {
                 isDefaultAction: true,
                 onPressed: () {
                   setState(() {
-                    filterUsers[index]['level'] = level;
+                    filterUsers[index]['level'] = level; // changing the user's admin level
 
+                    // adds the user to the correct list for admin level
                     switch(level) {
                       case 'Admin':
                         widget.admins.add(filterUsers[index]);
@@ -86,6 +87,7 @@ class _SearchPageState extends State<SearchPage> {
                         break;
                     }
 
+                    // removing the user from the search lists
                     users.remove(filterUsers[index]);
                     filterUsers.removeAt(index);
                   });

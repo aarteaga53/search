@@ -37,30 +37,7 @@ class AdminsListView extends StatelessWidget {
                   return CupertinoActionSheet(
                     title: Text('${list[index]['level']} - ${list[index]['name'].substring(0, list[index]['name'].indexOf(' '))}'),
                     actions: <CupertinoActionSheetAction>[
-                      CupertinoActionSheetAction(
-                        child: const Text('Assign as Admin'),
-                        onPressed: () {
 
-
-                          Navigator.pop(context);
-                        },
-                      ),
-                      CupertinoActionSheetAction(
-                        child: const Text('Assign as Moderator'),
-                        onPressed: () {
-
-
-                          Navigator.pop(context);
-                        },
-                      ),
-                      CupertinoActionSheetAction(
-                        child: const Text('Assign as Coach'),
-                        onPressed: () {
-
-
-                          Navigator.pop(context);
-                        },
-                      ),
                     ],
                     cancelButton: CupertinoActionSheetAction(
                       child: const Text('Cancel'),

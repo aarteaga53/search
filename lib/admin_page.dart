@@ -45,6 +45,47 @@ class _AdminPageState extends State<AdminPage> {
     }
   ];
 
+  /// container that displays message when no users are in a certain admin level
+  Container emptyList(String title) {
+    return Container(
+      alignment: Alignment.centerLeft,
+      padding: const EdgeInsets.only(left: 15.0),
+      child: Text(
+        title,
+        style: const TextStyle(color: Colors.white, fontSize: 18),
+      ),
+    );
+  }
+
+  /// container that displays the title for each level of admins
+  Container titleList(String level) {
+    return Container(
+      alignment: Alignment.centerLeft,
+      padding: const EdgeInsets.only(left: 15.0),
+      child: Row(
+        children: [
+          Text(
+            level,
+            style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+          IconButton(
+            onPressed: () async {
+              await Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SearchPage(admins, moderators, coaches))
+              );
+
+              setState(() {
+
+              });
+            },
+            icon: const Icon(Icons.add_circle, color: Colors.white),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -96,106 +137,14 @@ class _AdminPageState extends State<AdminPage> {
                 ),
               ),
             ),
-            Container(
-              alignment: Alignment.centerLeft,
-              padding: const EdgeInsets.only(left: 15.0),
-              child: Row(
-                children: [
-                  const Text(
-                    'Admins',
-                    style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  IconButton(
-                    onPressed: () async {
-                      await Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => SearchPage(admins, moderators, coaches))
-                      );
-
-                      setState(() {
-
-                      });
-                    },
-                    icon: const Icon(Icons.add_circle, color: Colors.white),
-                  ),
-                ],
-              ),
-            ),
-            admins.isNotEmpty ? AdminsListView(list: admins) : EmptyList(title: 'No Admins'),
-            Container(
-              alignment: Alignment.centerLeft,
-              padding: const EdgeInsets.only(left: 15.0),
-              child: Row(
-                children: [
-                  const Text(
-                    'Moderators',
-                    style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  IconButton(
-                    onPressed: () async {
-                      await Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => SearchPage(admins, moderators, coaches))
-                      );
-
-                      setState(() {
-
-                      });
-                    },
-                    icon: const Icon(Icons.add_circle, color: Colors.white),
-                  ),
-                ],
-              ),
-            ),
-            moderators.isNotEmpty ? AdminsListView(list: moderators) : EmptyList(title: 'No Moderators'),
-            Container(
-              alignment: Alignment.centerLeft,
-              padding: const EdgeInsets.only(left: 15.0),
-              child: Row(
-                children: [
-                  const Text(
-                    'Coaches',
-                    style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  IconButton(
-                    onPressed: () async {
-                      await Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => SearchPage(admins, moderators, coaches))
-                      );
-
-                      setState(() {
-
-                      });
-                    },
-                    icon: const Icon(Icons.add_circle, color: Colors.white),
-                  ),
-                ],
-              ),
-            ),
-            coaches.isNotEmpty ? AdminsListView(list: coaches) : EmptyList(title: 'No Coaches'),
+            titleList('Admins'),
+            admins.isNotEmpty ? AdminsListView(list: admins) : emptyList('No Admins'),
+            titleList('Moderators'),
+            moderators.isNotEmpty ? AdminsListView(list: moderators) : emptyList('No Moderators'),
+            titleList('Coaches'),
+            coaches.isNotEmpty ? AdminsListView(list: coaches) : emptyList('No Coaches'),
           ],
         ),
-      ),
-    );
-  }
-}
-
-/// Container class to display that there are no admins for a specific group
-//ignore: must_be_immutable
-class EmptyList extends StatelessWidget {
-  String title;
-  
-  EmptyList({Key? key, required this.title}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.centerLeft,
-      padding: const EdgeInsets.only(left: 15.0),
-      child: Text(
-        title,
-        style: const TextStyle(color: Colors.white, fontSize: 18),
       ),
     );
   }
