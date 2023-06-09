@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:search/admin_list_view.dart';
+import 'package:search/search_admin_list_view.dart';
 import 'package:search/search_page.dart';
 
 class AdminPage extends StatefulWidget {
@@ -204,19 +205,19 @@ class _AdminPageState extends State<AdminPage> {
                 filterAdmins.isNotEmpty ? Wrap(
                   children: [
                     titleList('Admins'),
-                    AdminListView(filterAdmins, moderators, coaches, updateAdmins, updateModerators, updateCoaches)
+                    SearchAdminListView(filterAdmins, admins, moderators, coaches, updateAdmins, updateModerators, updateCoaches)
                   ],
                 ) : Container(),
                 filterModerators.isNotEmpty ? Wrap(
                   children: [
                     titleList('Moderators'),
-                    AdminListView(filterModerators, admins, coaches, updateAdmins, updateModerators, updateCoaches)
+                    SearchAdminListView(filterModerators, moderators, admins, coaches, updateAdmins, updateModerators, updateCoaches)
                   ],
                 ) : Container(),
                 filterCoaches.isNotEmpty ? Wrap(
                   children: [
                     titleList('Coaches'),
-                    AdminListView(filterCoaches, admins, moderators, updateAdmins, updateModerators, updateCoaches)
+                    SearchAdminListView(filterCoaches, coaches, admins, moderators, updateAdmins, updateModerators, updateCoaches)
                   ],
                 ) : Container(),
               ],
