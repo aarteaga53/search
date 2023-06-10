@@ -147,7 +147,7 @@ class _AdminPageState extends State<AdminPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xff222222),
+      backgroundColor: const Color(0xff111111),
       appBar: AppBar(
         title: const Text('Manage Admins'),
         centerTitle: true,
@@ -155,7 +155,7 @@ class _AdminPageState extends State<AdminPage> {
         actions: [
           IconButton(
             onPressed: () {},
-            icon: const Icon(CupertinoIcons.heart_fill),
+            icon: const Icon(CupertinoIcons.heart),
           ),
         ],
       ),
@@ -163,43 +163,29 @@ class _AdminPageState extends State<AdminPage> {
         child: Column(
           children: [
             Container(
-              padding: const EdgeInsets.all(10.0),
+              padding: isSearching ? const EdgeInsets.only(left: 10.0, top: 3.0) : const EdgeInsets.all(10.0),
               child: Row(
                 children: [
                   Expanded(
-                    child: TextField(
+                    child: CupertinoTextField(
                       onChanged: updateSearch,
                       onTap: updateIsSearching,
                       focusNode: textFocus,
                       style: const TextStyle(color: Colors.white),
                       cursorColor: Colors.grey,
-                      decoration: InputDecoration(
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                          borderSide: const BorderSide(
-                            color: Color(0xff333333),
-                            width: 0.0,
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                          borderSide: const BorderSide(
-                            color: Color(0xff333333),
-                            width: 0.0,
-                          ),
-                        ),
-                        labelText: 'Search',
-                        labelStyle: const TextStyle(
-                          color: Colors.grey,
-                        ),
-                        contentPadding: const EdgeInsets.all(0),
-                        floatingLabelBehavior: FloatingLabelBehavior.never,
-                        filled: true,
-                        fillColor: const Color(0xff333333),
-                        prefixIcon: const Icon(Icons.search),
-                        prefixIconColor: Colors.grey,
-                        suffixIcon: isSearching ? IconButton(onPressed: updateIsSearching, icon: const Icon(CupertinoIcons.xmark_circle_fill)) : null,
-                        suffixIconColor: Colors.grey,
+                      placeholder: 'Search',
+                      placeholderStyle: const TextStyle(color: Colors.grey),
+                      prefix: Container(
+                        margin: const EdgeInsets.only(left: 5.0),
+                        child: const Icon(CupertinoIcons.search, color: Colors.grey),
+                      ),
+                      suffix: isSearching ? Container(
+                        margin: const EdgeInsets.only(right: 5.0),
+                        child: const Icon(CupertinoIcons.xmark_circle_fill, color: Colors.grey),
+                      ) : null,
+                      decoration: BoxDecoration(
+                        color: const Color(0xff333333),
+                        borderRadius: BorderRadius.circular(5.0),
                       ),
                     ),
                   ),

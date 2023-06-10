@@ -193,7 +193,7 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xff222222),
+      backgroundColor: const Color(0xff111111),
       appBar: AppBar(
         title: const Text('Add an Admin'),
         centerTitle: true,
@@ -201,50 +201,36 @@ class _SearchPageState extends State<SearchPage> {
         actions: [
           IconButton(
             onPressed: () {},
-            icon: const Icon(CupertinoIcons.heart_fill),
+            icon: const Icon(CupertinoIcons.heart),
           ),
         ],
       ),
       body: Column(
         children: [
           Container(
-            padding: const EdgeInsets.all(10.0),
+            padding: isSearching ? const EdgeInsets.only(left: 10.0, top: 3.0) : const EdgeInsets.all(10.0),
             child: Row(
               children: [
                 Expanded(
-                  child: TextField(
+                  child: CupertinoTextField(
                     onChanged: updateSearch,
                     onTap: updateIsSearching,
                     focusNode: textFocus,
                     style: const TextStyle(color: Colors.white),
                     cursorColor: Colors.grey,
-                    decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: const BorderSide(
-                          color: Color(0xff333333),
-                          width: 0.0,
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: const BorderSide(
-                          color: Color(0xff333333),
-                          width: 0.0,
-                        ),
-                      ),
-                      labelText: 'Search for a user...',
-                      labelStyle: const TextStyle(
-                        color: Colors.grey,
-                      ),
-                      contentPadding: const EdgeInsets.all(0),
-                      floatingLabelBehavior: FloatingLabelBehavior.never,
-                      filled: true,
-                      fillColor: const Color(0xff333333),
-                      prefixIcon: const Icon(CupertinoIcons.search),
-                      prefixIconColor: Colors.grey,
-                      suffixIcon: isSearching ? IconButton(onPressed: updateIsSearching, icon: const Icon(CupertinoIcons.xmark_circle_fill)) : null,
-                      suffixIconColor: Colors.grey,
+                    placeholder: 'Search for a user...',
+                    placeholderStyle: const TextStyle(color: Colors.grey),
+                    prefix: Container(
+                      margin: const EdgeInsets.only(left: 5.0),
+                      child: const Icon(CupertinoIcons.search, color: Colors.grey),
+                    ),
+                    suffix: isSearching ? Container(
+                      margin: const EdgeInsets.only(right: 5.0),
+                      child: const Icon(CupertinoIcons.xmark_circle_fill, color: Colors.grey),
+                    ) : null,
+                    decoration: BoxDecoration(
+                      color: const Color(0xff333333),
+                      borderRadius: BorderRadius.circular(5.0),
                     ),
                   ),
                 ),
