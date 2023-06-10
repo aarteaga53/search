@@ -45,9 +45,11 @@ class _SearchPageState extends State<SearchPage> {
     },
   ];
   List filterUsers = [];
-  bool isSearching = false;
-  FocusNode textFocus = FocusNode();
+  bool isSearching = false; // boolean to check if the user is searching a name
+  FocusNode textFocus = FocusNode(); // search text field focus
 
+  /// Toggles the isSearching boolean
+  /// If isSearching becomes false then the text field is unfocused
   void updateIsSearching() {
     setState(() {
       isSearching = !isSearching;
@@ -71,7 +73,7 @@ class _SearchPageState extends State<SearchPage> {
     });
   }
 
-  /// modal popup that asks to confirm you are assigning a user admin level
+  /// Modal popup that asks to confirm you are assigning a user admin level
   void showModalAssignAdmin(String level, int index) {
     showCupertinoModalPopup(
         context: context,
@@ -123,7 +125,7 @@ class _SearchPageState extends State<SearchPage> {
     );
   }
 
-  /// modal popup that let's you know that the user has been assigned an admin level
+  /// Modal popup that let's you know that the user has been assigned an admin level
   void showModalAdmin(String level) {
     showCupertinoModalPopup(
         context: context,
@@ -141,6 +143,50 @@ class _SearchPageState extends State<SearchPage> {
             ],
           );
         }
+    );
+  }
+
+  /// Modal popup that shows available actions on a searched user
+  void showModalActions(int index) {
+    showCupertinoModalPopup(
+      context: context,
+      builder: (BuildContext context) {
+        return CupertinoActionSheet(
+          title: Text(filterUsers[index]['name']),
+          actions: [
+            CupertinoActionSheetAction(
+              child: const Text('Assign as Admin'),
+              onPressed: () {
+                Navigator.pop(context);
+
+                showModalAssignAdmin('Admin', index);
+              },
+            ),
+            CupertinoActionSheetAction(
+              child: const Text('Assign as Moderator'),
+              onPressed: () {
+                Navigator.pop(context);
+
+                showModalAssignAdmin('Moderator', index);
+              },
+            ),
+            CupertinoActionSheetAction(
+              child: const Text('Assign as Coach'),
+              onPressed: () {
+                Navigator.pop(context);
+
+                showModalAssignAdmin('Coach', index);
+              },
+            ),
+          ],
+          cancelButton: CupertinoActionSheetAction(
+            child: const Text('Cancel'),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        );
+      },
     );
   }
 
@@ -230,46 +276,7 @@ class _SearchPageState extends State<SearchPage> {
                   ),
                   trailing: IconButton(
                     onPressed: () {
-                      showCupertinoModalPopup(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return CupertinoActionSheet(
-                            title: Text(filterUsers[index]['name']),
-                            actions: [
-                              CupertinoActionSheetAction(
-                                child: const Text('Assign as Admin'),
-                                onPressed: () {
-                                  Navigator.pop(context);
-
-                                  showModalAssignAdmin('Admin', index);
-                                },
-                              ),
-                              CupertinoActionSheetAction(
-                                child: const Text('Assign as Moderator'),
-                                onPressed: () {
-                                  Navigator.pop(context);
-
-                                  showModalAssignAdmin('Moderator', index);
-                                },
-                              ),
-                              CupertinoActionSheetAction(
-                                child: const Text('Assign as Coach'),
-                                onPressed: () {
-                                  Navigator.pop(context);
-
-                                  showModalAssignAdmin('Coach', index);
-                                },
-                              ),
-                            ],
-                            cancelButton: CupertinoActionSheetAction(
-                              child: const Text('Cancel'),
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                            ),
-                          );
-                        },
-                      );
+                      showModalActions(index);
                     },
                     icon: const Icon(Icons.more_horiz, color: Colors.white, size: 36),
                   ),

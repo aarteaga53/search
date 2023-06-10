@@ -4,10 +4,10 @@ import 'package:intl/intl.dart';
 
 //ignore: must_be_immutable
 class SearchAdminListView extends StatefulWidget {
-  List filterList;
-  List mainList;
-  List secondList;
-  List thirdList;
+  List filterList; // admin, moderator, coach
+  List mainList; // admin, moderator, coach
+  List secondList; // moderator, admin, admin
+  List thirdList; // coach, coach, moderator
   void Function(List newAdmins) updateAdmins;
   void Function(List newModerators) updateModerators;
   void Function(List newCoaches) updateCoaches;
@@ -20,7 +20,7 @@ class SearchAdminListView extends StatefulWidget {
 
 class _SearchAdminListViewState extends State<SearchAdminListView> {
 
-  /// modal popup that asks to confirm you are assigning a user admin level
+  /// Modal popup that asks to confirm you are assigning a user an admin level
   void showModalAssignAdmin(String level, int index) {
     showCupertinoModalPopup(
         context: context,
@@ -42,16 +42,20 @@ class _SearchAdminListViewState extends State<SearchAdminListView> {
                     // adds user to new admin level list and updates the list
                     switch(level) {
                       case 'Admin':
+                        // add user to new admin list and update the list
                         widget.secondList.add(widget.filterList[index]);
                         widget.updateAdmins(widget.secondList);
                         break;
                       case 'Moderator':
+                        // changing to moderator could be two different lists
                         switch(curLevel) {
                           case 'Admin':
+                            // add user to new admin list and update the list
                             widget.secondList.add(widget.filterList[index]);
                             widget.updateModerators(widget.secondList);
                             break;
                           case 'Coach':
+                            // add user to new admin list and update the list
                             widget.thirdList.add(widget.filterList[index]);
                             widget.updateModerators(widget.thirdList);
                             break;
@@ -60,11 +64,13 @@ class _SearchAdminListViewState extends State<SearchAdminListView> {
                         }
                         break;
                       case 'Coach':
+                        // add user to new admin list and update the list
                         widget.thirdList.add(widget.filterList[index]);
                         widget.updateCoaches(widget.thirdList);
                         break;
                     }
 
+                    // removes the user from their current list
                     widget.filterList.removeAt(index);
                   });
 
@@ -87,7 +93,7 @@ class _SearchAdminListViewState extends State<SearchAdminListView> {
     );
   }
 
-  /// modal popup that let's you know that the user has been assigned an admin level
+  /// Modal popup that let's you know that the user has been assigned an admin level
   void showModalAdmin(String level) {
     showCupertinoModalPopup(
         context: context,
@@ -108,7 +114,7 @@ class _SearchAdminListViewState extends State<SearchAdminListView> {
     );
   }
 
-  /// modal popup that asks to confirm you are removing admin level
+  /// Modal popup that asks to confirm you are removing admin level
   void showModalRemoveAdmin(String level, int index) {
     showCupertinoModalPopup(
         context: context,
@@ -145,7 +151,7 @@ class _SearchAdminListViewState extends State<SearchAdminListView> {
     );
   }
 
-  /// modal popup that let's you know that the user is no longer an admin
+  /// Modal popup that let's you know that the user is no longer an admin
   void showModalAdminRemoved(String level) {
     showCupertinoModalPopup(
         context: context,

@@ -45,12 +45,15 @@ class _AdminPageState extends State<AdminPage> {
       "memberDate": DateTime.now(),
     }
   ];
+  // filtered lists for each admin level
   List filterAdmins = [];
   List filterModerators = [];
   List filterCoaches = [];
-  bool isSearching = false;
-  FocusNode textFocus = FocusNode();
+  bool isSearching = false; // boolean to check if the user is searching a name
+  FocusNode textFocus = FocusNode(); // search text field focus
 
+  /// Toggles the isSearching boolean
+  /// If isSearching becomes false then the text field is unfocused
   void updateIsSearching() {
     setState(() {
       isSearching = !isSearching;
@@ -78,25 +81,28 @@ class _AdminPageState extends State<AdminPage> {
     });
   }
 
+  /// Update the admin list if there is a change
   void updateAdmins(List newAdmins) {
     setState(() {
       admins = newAdmins;
     });
   }
 
+  /// Update the moderator list if there is a change
   void updateModerators(List newModerators) {
     setState(() {
       moderators = newModerators;
     });
   }
 
+  /// Update the coach list if there is a change
   void updateCoaches(List newCoaches) {
     setState(() {
       coaches = newCoaches;
     });
   }
 
-  /// container that displays message when no users are in a certain admin level
+  /// Container that displays message when no users are in a specific admin level
   Container emptyList(String title) {
     return Container(
       alignment: Alignment.centerLeft,
@@ -108,7 +114,7 @@ class _AdminPageState extends State<AdminPage> {
     );
   }
 
-  /// container that displays the title for each level of admins
+  /// Container that displays the title for each level of admins and the add button
   Container titleList(String level) {
     return Container(
       alignment: Alignment.centerLeft,
@@ -121,6 +127,7 @@ class _AdminPageState extends State<AdminPage> {
           ),
           isSearching ? Container() : IconButton(
             onPressed: () async {
+              // go to search page when the add button is clicked
               await Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => SearchPage(admins, moderators, coaches))
@@ -130,7 +137,7 @@ class _AdminPageState extends State<AdminPage> {
 
               });
             },
-            icon: const Icon(Icons.add_circle, color: Colors.white),
+            icon: const Icon(CupertinoIcons.add_circled_solid, color: Colors.white),
           ),
         ],
       ),
@@ -196,7 +203,7 @@ class _AdminPageState extends State<AdminPage> {
                       ),
                     ),
                   ),
-                  isSearching ? TextButton(onPressed: updateIsSearching, child: const Text('Cancel')) : Container()
+                  isSearching ? TextButton(onPressed: updateIsSearching, child: const Text('Cancel')) : Container(),
                 ],
               ),
             ),

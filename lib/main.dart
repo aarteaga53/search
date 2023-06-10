@@ -34,11 +34,11 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
-  int selectedIndex = 0; // index for navigation bar item
-  String searchName = ""; // the name that is being searched for
+  // navigation pages
   List pageList = [
     const AdminPage()
   ];
+  int selectedIndex = 0; // index for navigation bar item
 
   @override
   Widget build(BuildContext context) {

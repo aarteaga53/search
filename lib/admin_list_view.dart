@@ -19,7 +19,7 @@ class AdminListView extends StatefulWidget {
 
 class _AdminListViewState extends State<AdminListView> {
 
-  /// modal popup that asks to confirm you are assigning a user admin level
+  /// Modal popup that asks to confirm you are assigning a user admin level
   void showModalAssignAdmin(String level, int index) {
     showCupertinoModalPopup(
         context: context,
@@ -38,16 +38,20 @@ class _AdminListViewState extends State<AdminListView> {
                     // adds user to new admin level list and updates the list
                     switch(level) {
                       case 'Admin':
+                        // add user to new admin list and update the list
                         widget.secondList.add(widget.mainList[index]);
                         widget.updateAdmins(widget.secondList);
                         break;
                       case 'Moderator':
+                        // changing to moderator could be two different lists
                         switch(curLevel) {
                           case 'Admin':
+                            // add user to new admin list and update the list
                             widget.secondList.add(widget.mainList[index]);
                             widget.updateModerators(widget.secondList);
                             break;
                           case 'Coach':
+                            // add user to new admin list and update the list
                             widget.thirdList.add(widget.mainList[index]);
                             widget.updateModerators(widget.thirdList);
                             break;
@@ -56,6 +60,7 @@ class _AdminListViewState extends State<AdminListView> {
                         }
                         break;
                       case 'Coach':
+                        // add user to new admin list and update the list
                         widget.thirdList.add(widget.mainList[index]);
                         widget.updateCoaches(widget.thirdList);
                         break;
@@ -84,7 +89,7 @@ class _AdminListViewState extends State<AdminListView> {
     );
   }
 
-  /// modal popup that let's you know that the user has been assigned an admin level
+  /// Modal popup that let's you know that the user has been assigned an admin level
   void showModalAdmin(String level) {
     showCupertinoModalPopup(
         context: context,
@@ -105,7 +110,7 @@ class _AdminListViewState extends State<AdminListView> {
     );
   }
 
-  /// modal popup that asks to confirm you are removing admin level
+  /// Modal popup that asks to confirm you are removing admin level
   void showModalRemoveAdmin(String level, int index) {
     showCupertinoModalPopup(
         context: context,
@@ -141,7 +146,7 @@ class _AdminListViewState extends State<AdminListView> {
     );
   }
 
-  /// modal popup that let's you know that the user is no longer an admin
+  /// Modal popup that let's you know that the user is no longer an admin
   void showModalAdminRemoved(String level) {
     showCupertinoModalPopup(
         context: context,
