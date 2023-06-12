@@ -1,12 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:search/UserDetails.dart';
 
 //ignore: must_be_immutable
 class SearchPage extends StatefulWidget {
-  List admins;
-  List moderators;
-  List coaches;
+  List<UserDetails> admins;
+  List<UserDetails> moderators;
+  List<UserDetails> coaches;
 
   SearchPage(this.admins, this.moderators, this.coaches, {Key? key}) : super(key: key);
 
@@ -17,34 +18,14 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
 
   // dummy data for a list of users
-  List users = [
-    {
-      "name": "Joanne Robinson",
-      "level": "none",
-      "memberDate": DateTime.now(),
-    },
-    {
-      "name": "Joe Mike",
-      "level": "none",
-      "memberDate": DateTime.now(),
-    },
-    {
-      "name": "John Jameson",
-      "level": "none",
-      "memberDate": DateTime.now(),
-    },
-    {
-      "name": "John Johnson",
-      "level": "none",
-      "memberDate": DateTime.now(),
-    },
-    {
-      "name": "Joseph Smith",
-      "level": "none",
-      "memberDate": DateTime.now(),
-    },
+  List<UserDetails> users = [
+    UserDetails("Joanne Robinson", "none", DateTime.now()),
+    UserDetails("Joe Mike", "none", DateTime.now()),
+    UserDetails("John Jameson", "none", DateTime.now()),
+    UserDetails("John Johnson", "none", DateTime.now()),
+    UserDetails("Joseph Smith", "none", DateTime.now())
   ];
-  List filterUsers = [];
+  List<UserDetails> filterUsers = [];
   bool isSearching = false; // boolean to check if the user is searching a name
   FocusNode textFocus = FocusNode(); // search text field focus
 
@@ -66,7 +47,7 @@ class _SearchPageState extends State<SearchPage> {
       if(searchName != '') {
         // checks that the search name length is less than the user's name to avoid errors
         // checks that the each letter in the search name is in the user's name in the same order
-        filterUsers = users.where((element) => element['name'].length >= searchName.length && element['name'].toLowerCase().substring(0, searchName.length) == searchName.toLowerCase()).toList();
+        filterUsers = users.where((element) => element.name.length >= searchName.length && element.name.toLowerCase().substring(0, searchName.length) == searchName.toLowerCase()).toList();
       } else {
         filterUsers = [];
       }
@@ -86,7 +67,7 @@ class _SearchPageState extends State<SearchPage> {
                 isDefaultAction: true,
                 onPressed: () {
                   setState(() {
-                    filterUsers[index]['level'] = level; // changing the user's admin level
+                    filterUsers[index].level = level; // changing the user's admin level
 
                     // adds the user to the correct list for admin level
                     switch(level) {
@@ -152,7 +133,7 @@ class _SearchPageState extends State<SearchPage> {
       context: context,
       builder: (BuildContext context) {
         return CupertinoActionSheet(
-          title: Text(filterUsers[index]['name']),
+          title: Text(filterUsers[index].name),
           actions: [
             CupertinoActionSheetAction(
               child: const Text('Assign as Admin'),
@@ -250,14 +231,14 @@ class _SearchPageState extends State<SearchPage> {
                   leading: CircleAvatar(
                     backgroundColor: const Color(0xffd3273e),
                     foregroundColor: Colors.white,
-                    child: Text(filterUsers[index]['name'].toString().substring(0, 1)),
+                    child: Text(filterUsers[index].name.toString().substring(0, 1)),
                   ),
                   title: Text(
-                    filterUsers[index]['name'],
+                    filterUsers[index].name,
                     style: const TextStyle(color: Colors.white),
                   ),
                   subtitle: Text(
-                    'Member since ${DateFormat.yMd().format(filterUsers[index]['memberDate'])}',
+                    'Member since ${DateFormat.yMd().format(filterUsers[index].memberDate)}',
                     style: const TextStyle(color: Colors.white),
                   ),
                   trailing: IconButton(

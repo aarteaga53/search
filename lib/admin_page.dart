@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:search/UserDetails.dart';
 import 'package:search/admin_list_view.dart';
 import 'package:search/search_admin_list_view.dart';
 import 'package:search/search_page.dart';
@@ -14,41 +15,21 @@ class AdminPage extends StatefulWidget {
 class _AdminPageState extends State<AdminPage> {
 
   // dummy data for admin users
-  List admins = [
-    {
-      "name": "Chuka Ikokwu",
-      "level": "Admin",
-      "memberDate": DateTime.now(),
-    },
-    {
-      "name": "Shaela Druyon",
-      "level": "Admin",
-      "memberDate": DateTime.now(),
-    }
+  List<UserDetails> admins = [
+    UserDetails("Chuka Ikokwu", "Admin", DateTime.now()),
+    UserDetails("Shaela Druyon", "Admin", DateTime.now())
   ];
-  List moderators = [
-    {
-      "name": "Shushmitha Ganesh",
-      "level": "Moderator",
-      "memberDate": DateTime.now(),
-    },
-    {
-      "name": "Jorge Morataya",
-      "level": "Moderator",
-      "memberDate": DateTime.now(),
-    }
+  List<UserDetails> moderators = [
+    UserDetails("Shushmitha Ganesh", "Moderator", DateTime.now()),
+    UserDetails("Jorge Morataya", "Moderator", DateTime.now())
   ];
-  List coaches = [
-    {
-      "name": "Ben Nguyen",
-      "level": "Coach",
-      "memberDate": DateTime.now(),
-    }
+  List<UserDetails> coaches = [
+    UserDetails("Ben Nguyen", "Coach", DateTime.now())
   ];
   // filtered lists for each admin level
-  List filterAdmins = [];
-  List filterModerators = [];
-  List filterCoaches = [];
+  List<UserDetails> filterAdmins = [];
+  List<UserDetails> filterModerators = [];
+  List<UserDetails> filterCoaches = [];
   bool isSearching = false; // boolean to check if the user is searching a name
   FocusNode textFocus = FocusNode(); // search text field focus
 
@@ -70,9 +51,9 @@ class _AdminPageState extends State<AdminPage> {
       if(searchName != '') {
         // checks that the search name length is less than the user's name to avoid errors
         // checks that the each letter in the search name is in the user's name in the same order
-        filterAdmins = admins.where((element) => element['name'].length >= searchName.length && element['name'].toLowerCase().substring(0, searchName.length) == searchName.toLowerCase()).toList();
-        filterModerators = moderators.where((element) => element['name'].length >= searchName.length && element['name'].toLowerCase().substring(0, searchName.length) == searchName.toLowerCase()).toList();
-        filterCoaches = coaches.where((element) => element['name'].length >= searchName.length && element['name'].toLowerCase().substring(0, searchName.length) == searchName.toLowerCase()).toList();
+        filterAdmins = admins.where((element) => element.name.length >= searchName.length && element.name.toLowerCase().substring(0, searchName.length) == searchName.toLowerCase()).toList();
+        filterModerators = moderators.where((element) => element.name.length >= searchName.length && element.name.toLowerCase().substring(0, searchName.length) == searchName.toLowerCase()).toList();
+        filterCoaches = coaches.where((element) => element.name.length >= searchName.length && element.name.toLowerCase().substring(0, searchName.length) == searchName.toLowerCase()).toList();
       } else {
         filterAdmins = [];
         filterModerators = [];
@@ -82,21 +63,21 @@ class _AdminPageState extends State<AdminPage> {
   }
 
   /// Update the admin list if there is a change
-  void updateAdmins(List newAdmins) {
+  void updateAdmins(List<UserDetails> newAdmins) {
     setState(() {
       admins = newAdmins;
     });
   }
 
   /// Update the moderator list if there is a change
-  void updateModerators(List newModerators) {
+  void updateModerators(List<UserDetails> newModerators) {
     setState(() {
       moderators = newModerators;
     });
   }
 
   /// Update the coach list if there is a change
-  void updateCoaches(List newCoaches) {
+  void updateCoaches(List<UserDetails> newCoaches) {
     setState(() {
       coaches = newCoaches;
     });

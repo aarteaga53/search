@@ -1,15 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:search/UserDetails.dart';
 
 //ignore: must_be_immutable
 class AdminListView extends StatefulWidget {
-  List mainList; // admin, moderator, coach
-  List secondList; // moderator, admin, admin
-  List thirdList; // coach, coach, moderator
-  void Function(List newAdmins) updateAdmins;
-  void Function(List newModerators) updateModerators;
-  void Function(List newCoaches) updateCoaches;
+  List<UserDetails> mainList; // admin, moderator, coach
+  List<UserDetails> secondList; // moderator, admin, admin
+  List<UserDetails> thirdList; // coach, coach, moderator
+  void Function(List<UserDetails> newAdmins) updateAdmins;
+  void Function(List<UserDetails> newModerators) updateModerators;
+  void Function(List<UserDetails> newCoaches) updateCoaches;
 
   AdminListView(this.mainList, this.secondList, this.thirdList, this.updateAdmins, this.updateModerators, this.updateCoaches, {Key? key}) : super(key: key);
 
@@ -32,8 +33,8 @@ class _AdminListViewState extends State<AdminListView> {
                 isDefaultAction: true,
                 onPressed: () {
                   setState(() {
-                    String curLevel = widget.mainList[index]['level']; // current admin level
-                    widget.mainList[index]['level'] = level; // changing the user's admin level
+                    String curLevel = widget.mainList[index].level; // current admin level
+                    widget.mainList[index].level = level; // changing the user's admin level
 
                     // adds user to new admin level list and updates the list
                     switch(level) {
@@ -187,14 +188,14 @@ class _AdminListViewState extends State<AdminListView> {
       onPressed: () {
         Navigator.pop(context);
 
-        showModalRemoveAdmin(widget.mainList[index]['level'], index);
+        showModalRemoveAdmin(widget.mainList[index].level, index);
       },
     );
   }
 
   /// Create a list of available actions depending on the current user's admin level
   List<CupertinoActionSheetAction> showModalActions(int index) {
-    switch(widget.mainList[index]['level']) {
+    switch(widget.mainList[index].level) {
       case 'Admin':
         return <CupertinoActionSheetAction>[assignAdminAction('Moderator', index), assignAdminAction('Coach', index), removeAdminAction(index)];
       case 'Moderator':
@@ -217,14 +218,14 @@ class _AdminListViewState extends State<AdminListView> {
           leading: CircleAvatar(
             backgroundColor: const Color(0xffd3273e),
             foregroundColor: Colors.white,
-            child: Text(widget.mainList[index]['name'].toString().substring(0, 1)),
+            child: Text(widget.mainList[index].name.toString().substring(0, 1)),
           ),
           title: Text(
-            widget.mainList[index]['name'],
+            widget.mainList[index].name,
             style: const TextStyle(color: Colors.white),
           ),
           subtitle: Text(
-            'Admin since ${DateFormat.yMd().format(widget.mainList[index]['memberDate'])}',
+            'Admin since ${DateFormat.yMd().format(widget.mainList[index].memberDate)}',
             style: const TextStyle(color: Colors.white),
           ),
           trailing: IconButton(
@@ -233,7 +234,7 @@ class _AdminListViewState extends State<AdminListView> {
                 context: context,
                 builder: (BuildContext context) {
                   return CupertinoActionSheet(
-                    title: Text('${widget.mainList[index]['level']} - ${widget.mainList[index]['name'].substring(0, widget.mainList[index]['name'].indexOf(' '))}'),
+                    title: Text('${widget.mainList[index].level} - ${widget.mainList[index].name.substring(0, widget.mainList[index].name.indexOf(' '))}'),
                     actions: showModalActions(index),
                     cancelButton: CupertinoActionSheetAction(
                       child: const Text('Cancel'),
