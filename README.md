@@ -1,16 +1,5 @@
-# search
+# Search
 
-A new Flutter project.
+A Flutter project to implement a search feature for users in an admin page. You can search for users that are already admins or that do not have admin status. You can also change admin status, assign admin, or remove admin status from the users.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+[Video Demonstration](https://drive.google.com/file/d/1He3ESa-TTj23Iu5R_ArWBbPqc1GYgOg2/view?usp=sharing)
